@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import contactsService from "./contacts.service";
+import { createContactSchema } from "./contacts.schemas";
 
 type ContactServiceType = typeof contactsService;
 
@@ -33,6 +34,24 @@ class ContactController {
         .json({ success: false, message: "Contact not found" });
     }
 
+    return res.status(200).json({ success: true, data: contact });
+  }
+
+  async create(req: Request, res: Response) {
+    const validation = createContactSchema.safeParse(req.body);
+
+    if (!validation.success) {
+      return res.status(400).json({
+        succes: false,
+        message: "Validation failed",
+        errors: validation.error.issues,
+      });
+    }
+
+    const contact = await this.contactService.create(
+      validation.data,
+      TEMP_USER_ID,
+    );
     return res.status(200).json({ success: true, data: contact });
   }
 }

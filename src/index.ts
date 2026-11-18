@@ -5,6 +5,8 @@ import contactRoutes from './modules/contacts/contacts.routes';
 
 const app = express();
 
+app.use(express.json());
+
 app.use('/contacts', contactRoutes);
 
 app.get('/', (req: Request, res: Response) => {

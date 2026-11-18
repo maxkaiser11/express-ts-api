@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import type { CreateContactInput } from "./contacts.schemas";
 
 class ContactService {
   async list(userId: number) {
@@ -11,6 +12,17 @@ class ContactService {
     return prisma.contact.findFirst({
       where: { id, userId },
     });
+  }
+
+  async create(data: CreateContactInput, userId: number) {
+    return prisma.contact.create({
+      data: {
+        ...data,
+        phone: data.phone ?? null,
+        address: data.address ?? null,
+        userId,
+      }
+    })
   }
 }
 

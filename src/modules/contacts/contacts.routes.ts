@@ -11,4 +11,8 @@ router.get("/:id", (req: Request, res: Response) => {
   return contactsController.get(req, res);
 });
 
+router.post("/", (req: Request, res: Response) => {
+  return contactsController.create(req, res);
+});
+
 export default router;
